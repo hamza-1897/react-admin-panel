@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Categories from './pages/Categories';
+import Providers from './pages/Providers';
+import Settings from './pages/Settings';
 import AdminLayout from './components/layout/AdminLayout';
 import './App.css'; 
 
@@ -17,6 +19,8 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="providers" element={<Providers />} />
+          <Route path="settings" element={<Settings />} />
           {/* Add more nested routes here in the future like this: */}
           {/* <Route path="users" element={<UsersPage />} /> */}
           {/* Catch-all for dashboard routes */}

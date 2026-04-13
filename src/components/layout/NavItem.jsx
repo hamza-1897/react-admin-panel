@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
 
-const NavItem = ({ to, icon: Icon, label, isCollapsed }) => {
+const NavItem = ({ to, icon: Icon, label, isCollapsed, end = false }) => {
   return (
     <NavLink
       to={to}
+      end={end}
       className={({ isActive }) =>
         `flex items-center gap-3 px-3 py-3 mx-2 my-1 rounded-xl transition-all duration-200 group ${
           isActive

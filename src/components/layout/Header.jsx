@@ -46,7 +46,7 @@ const Header = ({ isCollapsed, setIsCollapsed }) => {
         {/* Admin Profile Area */}
         <div className="flex items-center gap-3">
           <div className="flex flex-col text-right hidden sm:flex">
-            <span className="text-sm font-bold text-gray-900">Admin User</span>
+            <span className="text-sm font-bold text-gray-900">Maha Naseer</span>
             <span className="text-xs font-medium text-indigo-600">Super Admin</span>
           </div>
           

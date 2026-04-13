@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Settings, ChartBarStacked, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Users, Settings, ChartBarStacked, ShieldCheck, ChevronLeft, ChevronRight, Store } from 'lucide-react';
 import NavItem from './NavItem';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
@@ -46,6 +46,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
             icon={item.icon}
             label={item.label}
             isCollapsed={isCollapsed}
+            end={item.label === 'Dashboard'}
           />
         ))}
 

@@ -1,80 +1,141 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { User, UserCheck } from 'lucide-react';
 import Table from '../components/Table';
+import { usersAPI } from '../services/api';
+import SearchInput from '../components/common/SearchInput';
+import StatsCard from '../components/common/StatsCard';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import Message from '../components/common/Message';
+import StatusBadge from '../components/common/StatusBadge';
 
+/**
+ * Users page component - Manage platform users with search, filtering, and status management
+ */
 const Users = () => {
-  // Mock data
-  const [users, setUsers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'customer', status: 'active', joinedAt: '2023-01-15' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'provider', status: 'inactive', joinedAt: '2023-02-20' },
-    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'customer', status: 'active', joinedAt: '2023-03-10' },
-    { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'provider', status: 'active', joinedAt: '2023-04-05' },
-    { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'customer', status: 'inactive', joinedAt: '2023-05-12' },
-    { id: 6, name: 'Diana Prince', email: 'diana@example.com', role: 'provider', status: 'active', joinedAt: '2023-06-18' },
-    { id: 7, name: 'Eve Adams', email: 'eve@example.com', role: 'customer', status: 'active', joinedAt: '2023-07-22' },
-    { id: 8, name: 'Frank Miller', email: 'frank@example.com', role: 'provider', status: 'inactive', joinedAt: '2023-08-30' },
-    { id: 9, name: 'Grace Lee', email: 'grace@example.com', role: 'customer', status: 'active', joinedAt: '2023-09-14' },
-    { id: 10, name: 'Henry Ford', email: 'henry@example.com', role: 'provider', status: 'active', joinedAt: '2023-10-25' },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const columns = [
-    { key: 'srNo', label: 'Sr.No' },
-    { key: 'name', label: 'Name' },
-    { key: 'email', label: 'Email' },
-    { key: 'role', label: 'Role' },
-    { key: 'status', label: 'Status' },
-    { key: 'joinedAt', label: 'Joined At' },
-    { key: 'action', label: 'Action' },
-  ];
+  // Fetch users on component mount
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-  const handleAction = (id) => {
-    setUsers(users.map(user =>
-      user.id === id
-        ? { ...user, status: user.status === 'active' ? 'inactive' : 'active' }
-        : user
-    ));
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await usersAPI.getAllUsers();
+      setUsers(data);
+    } catch (err) {
+      setError('Failed to load users');
+      console.error('Error fetching users:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusToggle = async (id) => {
+    try {
+      const user = users.find(u => u.id === id);
+      const newStatus = user.status === 'active' ? 'inactive' : 'active';
+
+      // Call API to update status
+      await usersAPI.updateUserStatus(id, newStatus);
+
+      // Update local state
+      setUsers(users.map(user =>
+        user.id === id
+          ? { ...user, status: newStatus }
+          : user
+      ));
+    } catch (err) {
+      console.error('Error updating user status:', err);
+      alert('Failed to update user status');
+    }
   };
 
   const filteredUsers = users.filter(user =>
     Object.values(user).some(value =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
   const totalCustomers = users.filter(user => user.role === 'customer').length;
   const totalProviders = users.filter(user => user.role === 'provider').length;
 
+  const columns = [
+    { key: 'srNo', label: 'Sr.No' },
+    { key: 'name', label: 'Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'role', label: 'Role' },
+    {
+      key: 'status',
+      label: 'Status',
+      render: (user) => <StatusBadge status={user.status} type="user" />
+    },
+    { key: 'joinedAt', label: 'Joined At' },
+    {
+      key: 'action',
+      label: 'Action',
+      render: (user) => (
+        <button
+          onClick={() => handleStatusToggle(user.id)}
+          className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+            user.status === 'active'
+              ? 'bg-red-100 text-red-800 hover:bg-red-200'
+              : 'bg-green-100 text-green-800 hover:bg-green-200'
+          }`}
+        >
+          {user.status === 'active' ? 'Deactivate' : 'Activate'}
+        </button>
+      )
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Users</h1>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900">Total Customers</h3>
-          <p className="text-3xl font-bold text-blue-600">{totalCustomers}</p>
+      {/* Error Message */}
+      {error && <Message type="error" message={error} />}
+
+      {/* Stats Cards */}
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <StatsCard
+            title="Total Customers"
+            value={totalCustomers}
+            icon={User}
+            iconColor="bg-blue-100 text-blue-600"
+          />
+          <StatsCard
+            title="Total Providers"
+            value={totalProviders}
+            icon={UserCheck}
+            iconColor="bg-green-100 text-green-600"
+          />
         </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900">Total Providers</h3>
-          <p className="text-3xl font-bold text-green-600">{totalProviders}</p>
-        </div>
-      </div>
+      )}
 
       {/* Search Bar */}
       <div className="bg-white p-4 rounded-lg shadow">
-        <input
-          type="text"
-          placeholder="Search users..."
+        <SearchInput
+          placeholder="Search users by name, email, role, or status..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
 
-      {/* Table with Scroll */}
+      {/* Users Table */}
       <div className="max-h-96 overflow-y-auto">
-        <Table columns={columns} data={filteredUsers} onAction={handleAction} />
+        <Table
+          columns={columns}
+          data={filteredUsers}
+          loading={loading}
+          emptyMessage="No users found matching your search."
+        />
       </div>
     </div>
   );

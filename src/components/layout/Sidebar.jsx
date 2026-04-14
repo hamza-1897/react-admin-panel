@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Settings, ChartBarStacked, ShieldCheck, ChevronLeft, ChevronRight, Store } from 'lucide-react';
+import { Home, Users, Settings, ChartBarStacked, ShieldCheck, ChevronLeft, ChevronRight, Flag, Mail } from 'lucide-react';
 import NavItem from './NavItem';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
@@ -7,7 +7,8 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     { label: 'Dashboard', icon: Home, to: '/dashboard' },
     { label: 'Users', icon: Users, to: '/dashboard/users' },
     { label: 'Providers', icon: Users, to: '/dashboard/providers' },
-
+    { label: 'Reports', icon: Flag, to: '/dashboard/reports' },
+    { label: 'Email User', icon: Mail, to: '/dashboard/email' },
     { label: 'Categories', icon: ChartBarStacked, to: '/dashboard/categories' },
     { label: 'Settings', icon: Settings, to: '/dashboard/settings' },
   ];
@@ -50,16 +51,6 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
           />
         ))}
 
-        {/* Divider */}
-        <div className="my-4 mx-4 border-t border-gray-100"></div>
-
-        {/* Secondary Menu Example */}
-        <NavItem
-          to="/dashboard/roles"
-          icon={ShieldCheck}
-          label="Roles & Permissions"
-          isCollapsed={isCollapsed}
-        />
       </div>
     </aside>
   );

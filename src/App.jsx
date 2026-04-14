@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
 import Categories from './pages/Categories';
 import Providers from './pages/Providers';
+import Reports from './pages/Reports';
+import EmailUser from './pages/EmailUser';
 import Settings from './pages/Settings';
 import AdminLayout from './components/layout/AdminLayout';
 import './App.css'; 
@@ -20,6 +22,8 @@ function App() {
           <Route path="users" element={<Users />} />
           <Route path="categories" element={<Categories />} />
           <Route path="providers" element={<Providers />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="email" element={<EmailUser />} />
           <Route path="settings" element={<Settings />} />
           {/* Add more nested routes here in the future like this: */}
           {/* <Route path="users" element={<UsersPage />} /> */}

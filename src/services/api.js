@@ -50,6 +50,7 @@ const mockProviders = [
     username: 'techstore_pro',
     businessName: 'TechStore Pro',
     email: 'contact@techstore.com',
+    address: '123 Tech Street, Karachi',
     profilePicture: 'https://via.placeholder.com/150/4F46E5/FFFFFF?text=TS',
     description: 'Leading provider of electronic gadgets and accessories with 10+ years of experience.',
     category: 'Electronics',
@@ -68,6 +69,7 @@ const mockProviders = [
     username: 'fashion_hub',
     businessName: 'Fashion Hub',
     email: 'info@fashionhub.com',
+    address: '45 Fashion Avenue, Lahore',
     profilePicture: 'https://via.placeholder.com/150/EC4899/FFFFFF?text=FH',
     description: 'Trendy clothing and fashion accessories for all ages.',
     category: 'Clothing',
@@ -85,6 +87,7 @@ const mockProviders = [
     username: 'garden_master',
     businessName: 'Garden Master',
     email: 'support@gardenmaster.com',
+    address: '78 Garden Road, Islamabad',
     profilePicture: 'https://via.placeholder.com/150/059669/FFFFFF?text=GM',
     description: 'Complete gardening solutions and landscaping services.',
     category: 'Home & Garden',
@@ -103,6 +106,7 @@ const mockProviders = [
     username: 'sports_zone',
     businessName: 'Sports Zone',
     email: 'hello@sportszone.com',
+    address: '9 Sports Plaza, Peshawar',
     profilePicture: 'https://via.placeholder.com/150/DC2626/FFFFFF?text=SZ',
     description: 'Sports equipment and fitness gear for athletes.',
     category: 'Sports',
@@ -119,6 +123,7 @@ const mockProviders = [
     username: 'bookworm_haven',
     businessName: 'Bookworm Haven',
     email: 'books@bookwormhaven.com',
+    address: '22 Book Street, Karachi',
     profilePicture: 'https://via.placeholder.com/150/7C3AED/FFFFFF?text=BH',
     description: 'Curated collection of books for all readers.',
     category: 'Books',
@@ -136,6 +141,7 @@ const mockProviders = [
     username: 'electro_world',
     businessName: 'Electro World',
     email: 'sales@electroworld.com',
+    address: '54 Commerce Blvd, Lahore',
     profilePicture: 'https://via.placeholder.com/150/EA580C/FFFFFF?text=EW',
     description: 'Wide range of electronic appliances and gadgets.',
     category: 'Electronics',
@@ -219,6 +225,25 @@ export const adminAPI = {
       });
     } catch (error) {
       console.error('Error uploading picture:', error);
+      throw error;
+    }
+  },
+
+  // Send email to a user from the admin panel
+  sendEmailToUser: async ({ email, subject, message }) => {
+    try {
+      // Replace with actual API call when backend is ready
+      // const response = await apiClient.post('/admin/send-email', { email, subject, message });
+      // return response.data;
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('Mock email sent to', email, { subject, message });
+          resolve({ success: true });
+        }, 600);
+      });
+    } catch (error) {
+      console.error('Error sending email:', error);
       throw error;
     }
   },
@@ -399,6 +424,128 @@ export const providersAPI = {
       });
     } catch (error) {
       console.error('Error fetching provider:', error);
+      throw error;
+    }
+  },
+};
+
+const mockReports = [
+  {
+    id: 1,
+    category: 'provider',
+    reporterName: 'Sara Khan',
+    targetName: 'TechStore Pro',
+    itemType: 'Service Provider',
+    type: 'spam',
+    status: 'pending',
+    reason: 'Reported for repeated spam messages and unsolicited promotions sent to multiple users.',
+    reportedAt: '2024-04-09',
+    views: 34,
+  },
+  {
+    id: 2,
+    category: 'provider',
+    reporterName: 'Ayesha Ali',
+    targetName: 'Fashion Hub',
+    itemType: 'Service Provider',
+    type: 'unusual_activity',
+    status: 'rejected',
+    reason: 'User received suspicious links and an unusual login request from this provider.',
+    reportedAt: '2024-04-11',
+    views: 19,
+  },
+  {
+    id: 3,
+    category: 'provider',
+    reporterName: 'Bilal Ahmed',
+    targetName: 'Fake Profile 007',
+    itemType: 'User Profile',
+    type: 'fake_profile',
+    status: 'pending',
+    reason: 'Profile seems fake with copied images and no valid business details.',
+    reportedAt: '2024-04-12',
+    views: 27,
+  },
+  {
+    id: 4,
+    category: 'provider',
+    reporterName: 'Faizan Raza',
+    targetName: 'Sports Zone',
+    itemType: 'Service Provider',
+    type: 'policy_violation',
+    status: 'resolved',
+    reason: 'Provider posted prohibited content and violated community guidelines.',
+    reportedAt: '2024-04-05',
+    views: 41,
+  },
+  {
+    id: 5,
+    category: 'support',
+    reporterName: 'Muneeb Khan',
+    subject: 'Payment issue',
+    message: 'I am unable to complete checkout because the payment gateway fails on the last step.',
+    supportType: 'general_support',
+    status: 'pending',
+    reportedAt: '2024-04-13',
+    views: 12,
+  },
+  {
+    id: 6,
+    category: 'support',
+    reporterName: 'Nadia Shah',
+    subject: 'Need help with verification',
+    message: 'I uploaded my documents but the provider verification status is still pending.',
+    supportType: 'help',
+    status: 'pending',
+    reportedAt: '2024-04-14',
+    views: 7,
+  },
+];
+
+export const reportsAPI = {
+  getAllReports: async () => {
+    try {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(mockReports);
+        }, 300);
+      });
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      throw error;
+    }
+  },
+
+  updateReportStatus: async (reportId, status) => {
+    try {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const report = mockReports.find((item) => item.id === reportId);
+          if (report) {
+            report.status = status;
+          }
+          resolve({ success: true });
+        }, 300);
+      });
+    } catch (error) {
+      console.error('Error updating report status:', error);
+      throw error;
+    }
+  },
+
+  deleteReport: async (reportId) => {
+    try {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const index = mockReports.findIndex((item) => item.id === reportId);
+          if (index !== -1) {
+            mockReports.splice(index, 1);
+          }
+          resolve({ success: true });
+        }, 300);
+      });
+    } catch (error) {
+      console.error('Error deleting report:', error);
       throw error;
     }
   },

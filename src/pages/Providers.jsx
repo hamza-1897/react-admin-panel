@@ -35,7 +35,7 @@ const Providers = () => {
       filtered = filtered.filter(provider =>
         provider.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         provider.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        provider.username.toLowerCase().includes(searchTerm.toLowerCase())
+        provider.address.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -118,7 +118,7 @@ const Providers = () => {
       <div className="bg-white p-4 rounded-lg shadow flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
           <SearchInput
-            placeholder="Search by business name, email, or username..."
+            placeholder="Search by business name, email, or address..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -174,7 +174,7 @@ const Providers = () => {
 
               <div className="space-y-2 mb-4">
                 <p className="text-sm text-gray-600">
-                  <span className="font-medium">Username:</span> {provider.username}
+                  <span className="font-medium">Address:</span> {provider.address}
                 </p>
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Category:</span> {provider.category}
@@ -212,7 +212,7 @@ const Providers = () => {
                 />
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">{selectedProvider.businessName}</h3>
-                  <p className="text-gray-600">@{selectedProvider.username}</p>
+                  <p className="text-gray-600">{selectedProvider.address}</p>
                   <StatusBadge status={selectedProvider.verificationStatus} type="provider" />
                 </div>
               </div>

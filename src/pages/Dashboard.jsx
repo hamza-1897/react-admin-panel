@@ -59,7 +59,6 @@ function Dashboard() {
       {/* Welcome Header */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Nazdeek Admin Dashboard</h1>
-        <p className="text-gray-600">Monitor and manage your platform's users, categories, and providers.</p>
       </div>
 
       {/* Statistics Cards */}
